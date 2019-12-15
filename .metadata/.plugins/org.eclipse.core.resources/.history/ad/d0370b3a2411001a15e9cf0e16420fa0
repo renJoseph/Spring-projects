@@ -1,0 +1,59 @@
+package com.example.demo.controller;
+
+import java.util.List;
+import java.util.Optional;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.example.demo.entity.Note;
+import com.example.demo.service.NoteService;
+
+@RestController
+@CrossOrigin(origins="*")
+@RequestMapping("/note")
+public class NoteController {
+	
+	private NoteService noteService;
+
+	public NoteController(@Autowired NoteService noteService) {
+		this.noteService = noteService;
+	}
+	
+	@PostMapping("/save")
+	public void saveNote(Note note) {
+		this.noteService.saveNote(note);
+	}
+	@GetMapping("/get/{id}")
+	public Optional<Note> getNote(@RequestParam("id") Long id) {
+		return this.noteService.getNoteById(id);
+	}
+	@GetMapping("/get")
+	public List<Note> getAllNotes(){
+		return this.noteService.getAllNotes();
+	}
+	@PostMapping("/update/{id}")
+	public void updateNote(@PathVariable("id") Long id, @RequestBody Note newData) {
+		this.noteService.updateNote(id, newData);
+	}
+	@DeleteMapping("/delete/{id}")
+	public void deleteNote(@RequestParam("id") Long id) {
+		this.noteService.deleteNoteById(id);
+	}
+	
+	public NoteService getNoteService() {
+		return noteService;
+	}
+
+	public void setNoteService(NoteService noteService) {
+		this.noteService = noteService;
+	}
+}

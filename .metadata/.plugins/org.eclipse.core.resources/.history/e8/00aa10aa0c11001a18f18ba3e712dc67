@@ -1,0 +1,33 @@
+package com.example.demo.service;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.example.demo.entity.NoteEntity;
+import com.example.demo.repository.NoteRepository;
+
+@Service
+public class NoteService {
+	
+	private NoteRepository noteRepo;
+
+	public NoteService(@Autowired NoteRepository noteRepo) {
+		this.noteRepo = noteRepo;
+	}
+	public String saveNote(NoteEntity note) {
+		noteRepo.save(note);
+		return "Created new note: " + note;
+	}
+	
+	
+	
+	
+	
+	public NoteRepository getNoteRepo() {
+		return noteRepo;
+	}
+
+	public void setNoteRepo(NoteRepository noteRepo) {
+		this.noteRepo = noteRepo;
+	}
+}

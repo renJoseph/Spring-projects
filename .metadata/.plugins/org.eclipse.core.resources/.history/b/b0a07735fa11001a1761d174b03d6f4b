@@ -1,0 +1,46 @@
+package com.example.demo.integration;
+
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+import java.util.Optional;
+
+import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.web.servlet.MockMvc;
+
+import com.example.demo.controller.NoteController;
+import com.example.demo.entity.Note;
+import com.example.demo.service.NoteService;
+
+@WebMvcTest(NoteController.class)
+@AutoConfigureMockMvc
+public class NoteControllerIntegration {
+	
+	@Autowired
+	public MockMvc mockMvc;
+
+	@MockBean
+	public NoteService noteService;
+
+	@Test
+	public void getByIdTest() throws Exception {
+		Note testNote = new Note();
+		testNote.setId(1l);
+		testNote.setTitle("testTitle");
+		testNote.setText("text to test with");
+
+		Optional<Note> testReturn = Optional.of(new Note());
+		
+		Mockito.when(this.noteService.getNoteById(1l)).thenReturn(testReturn);
+		
+		this.mockMvc.perform(get("/notes/123"))
+		.andExpect(status().isOk())
+		.andExpect(jsonPath("title").value("testTitle"));
+	}
+}

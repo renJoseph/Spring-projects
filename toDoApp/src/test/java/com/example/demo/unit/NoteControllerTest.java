@@ -1,0 +1,83 @@
+package com.example.demo.unit;
+
+import static org.assertj.core.api.Assertions.assertThat;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
+import org.junit.jupiter.api.Test;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.springframework.boot.test.context.SpringBootTest;
+
+import com.example.demo.controller.NoteController;
+import com.example.demo.entity.Note;
+import com.example.demo.service.NoteService;
+
+@SpringBootTest
+public class NoteControllerTest {
+	
+	@InjectMocks
+	public NoteController noteController;
+	
+	@Mock
+	public NoteService noteService;
+	
+	@Test
+	public void saveTest() {
+		Note testNote = new Note();
+		testNote.setId(1l);
+		testNote.setTitle("testTitle");
+		testNote.setText("text to test with");
+		
+		assertThat(this.noteService.saveNote(testNote))
+		.isEqualTo(testNote);
+	}
+	@Test
+	public void getByIdTest() {
+		Note testNote = new Note();
+		testNote.setId(1l);
+		testNote.setTitle("testTitle");
+		testNote.setText("text to test with");
+		Optional<Note> testReturn = Optional.of(testNote);
+		
+		Mockito.when(this.noteService.getNoteById(1l))
+		.thenReturn(testReturn);
+		
+		assertThat(this.noteController.getNote(1l).getBody())
+		.isEqualTo(testNote);
+	}
+	@Test
+	public void getAllTest() {
+		Note firstNote = new Note();
+		firstNote.setId(1l);
+		firstNote.setTitle("testTitle");
+		firstNote.setText("text to test with");
+		Note secondNote = new Note();
+		secondNote.setId(2l);
+		secondNote.setTitle("testTitle2");
+		secondNote.setText("text2 to test with");
+		List<Note> notes = new ArrayList<Note>();
+		notes.add(firstNote);
+		notes.add(secondNote);
+		
+		assertThat(this.noteController.getAllNotes().getBody())
+		.isEqualTo(notes);
+	}
+	@Test
+	public void updateTest() {
+		Note testNote = new Note();
+		testNote.setId(1l);
+		testNote.setTitle("testTitle");
+		testNote.setText("text to test with");
+		Note updatedNote = new Note();
+		updatedNote.setId(1l);
+		updatedNote.setTitle("updatedTitle");
+		updatedNote.setText("text to update with");
+		
+		assertThat(this.noteService.updateNote(testNote.getId(), updatedNote).get())
+		.isEqualTo(updatedNote);
+	}
+}

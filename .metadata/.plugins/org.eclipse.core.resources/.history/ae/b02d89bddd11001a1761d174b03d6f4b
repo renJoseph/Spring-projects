@@ -1,0 +1,40 @@
+package com.example.demo.unit;
+
+import static org.assertj.core.api.Assertions.assertThat;
+
+import java.util.Optional;
+
+import org.junit.jupiter.api.Test;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.springframework.boot.test.context.SpringBootTest;
+
+import com.example.demo.controller.NoteController;
+import com.example.demo.entity.Note;
+import com.example.demo.service.NoteService;
+
+@SpringBootTest
+public class NoteControllerTest {
+	
+	@InjectMocks
+	public NoteController noteController;
+	
+	@Mock
+	public NoteService noteService;
+	
+	@Test
+	public void getByIdTest() {
+		Note testNote = new Note();
+		testNote.setId(1l);
+		testNote.setTitle("testTitle");
+		testNote.setText("text to test with");
+		Optional<Note> testReturn = Optional.of(testNote);
+		
+		Mockito.when(this.noteService.getNoteById(1l))
+		.thenReturn(testReturn);
+		
+		assertThat(this.noteController.getNote(1l).getBody())
+		.isEqualTo(testNote);
+	}
+}

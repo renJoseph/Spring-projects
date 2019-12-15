@@ -1,0 +1,41 @@
+package com.example.demo.service;
+
+import java.util.Optional;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.example.demo.entity.Note;
+import com.example.demo.repository.NoteRepository;
+
+@Service
+public class NoteService {
+	
+	private NoteRepository noteRepo;
+
+	public NoteService(@Autowired NoteRepository noteRepo) {
+		this.noteRepo = noteRepo;
+	}
+	public String saveNote(Note note) {
+		noteRepo.save(note);
+		return "Created new note: " + note;
+	}
+	public Optional<Note> getNoteById(Long id){
+		return this.noteRepo.findById(id);
+	}
+	
+	
+	
+	
+	public NoteRepository getNoteRepo() {
+		return noteRepo;
+	}
+
+	public void setNoteRepo(NoteRepository noteRepo) {
+		this.noteRepo = noteRepo;
+	}
+	public void getAllNotes() {
+		// TODO Auto-generated method stub
+		
+	}
+}

@@ -1,0 +1,9 @@
+package com.example.demo.integration;
+
+import com.example.demo.controller.NoteController;
+
+@WebMvcTest(NoteController.class)
+@AutoConfigureMockMvc
+public class ItemControllerIntegration {
+
+}

@@ -1,0 +1,5 @@
+package com.example.demo.responseEntity;
+
+public class ResponseEntity {
+
+}

@@ -1,0 +1,53 @@
+package com.example.demo.service;
+
+import java.util.List;
+import java.util.Optional;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.example.demo.entity.Note;
+import com.example.demo.repository.NoteRepository;
+
+@Service
+public class NoteService {
+	
+	private NoteRepository noteRepo;
+
+	public NoteService(@Autowired NoteRepository noteRepo) {
+		this.noteRepo = noteRepo;
+	}
+	public Note saveNote(Note note) {
+		noteRepo.save(note);
+		return note;
+	}
+	public Optional<Note> getNoteById(Long id){
+		return this.noteRepo.findById(id);
+	}
+	public List<Note> getAllNotes(){
+		return this.noteRepo.findAll();
+	}
+	public Optional<Note> updateNote(Long id, Note newData) {
+		Optional<Note> note = this.noteRepo.findById(id);
+		if (note.isPresent()) {
+			if (!newData.getTitle().isEmpty()) {
+				note.get().setTitle(newData.getTitle());
+			}
+			if (!newData.getText().isEmpty()) {
+				note.get().setText(newData.getText());
+			}
+			this.noteRepo.save(note.get());
+		} return note;
+	}
+	public void deleteNoteById(Long id) {
+		this.noteRepo.deleteById(id);
+	}
+	
+	public NoteRepository getNoteRepo() {
+		return noteRepo;
+	}
+
+	public void setNoteRepo(NoteRepository noteRepo) {
+		this.noteRepo = noteRepo;
+	}
+}

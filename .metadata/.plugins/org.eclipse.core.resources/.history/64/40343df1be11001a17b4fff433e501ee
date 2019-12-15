@@ -1,0 +1,6 @@
+package com.example.demo.responseEntity;
+
+public class ResponseEntity {
+	@GetMapping("")
+	public ResponseEntity
+}
